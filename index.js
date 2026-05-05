@@ -77,6 +77,13 @@ APP.get('/new/:size',(req, res) => {
     }
 
     who = Math.random() < 0.5 ? "o" : "x";
+
+    history.push({
+        "size": Size,
+        "status": dask,
+        "winner": null
+    });
+
     res.json([who]);
 });
 
@@ -107,14 +114,14 @@ APP.get('/action/:x/:y', (req, res) => {
         winner = player;
         loser = (player == "o") ? "x" : "o";
         //紀錄歷史
-        history.push({"size":Size,"status":JSON.parse(JSON.stringify(dask)),"winner":winner});
+        history[history.length-1].winner = winner;
         return res.json(["Victory"]);
     }
 
     //如果平手
     if(Draw(Size,dask)){
         winner = "draw";
-        history.push({"size":Size,"status":JSON.parse(JSON.stringify(dask)),"winner":null});
+        history[history.length-1].winner = null;
         return res.json(["No Winner"]);
     }
 
